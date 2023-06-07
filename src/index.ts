@@ -1,4 +1,4 @@
-import { Application, Assets, Sprite } from 'pixi.js'
+import { Application, Assets, Container, Sprite } from 'pixi.js'
 
 const app = new Application({
 	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -51,17 +51,30 @@ Assets.load(["Clampy","myImage","buttonYN","manImage"]).then( ()=>{
 	image.anchor.set(0.5);
 	image.x = (app.screen.width/2);
 	image.y = (app.screen.height/2);
+	image.rotation = -Math.PI/4;
+	//image.angle = -45;
 
-	man.anchor.set(1);
-	man.x = (app.screen.width);
-	man.y = (app.screen.height);
+	man.anchor.set(0);
+	man.x = 0*(app.screen.width);
+	man.y = 0*(app.screen.height);
 
-	buttons.x = 0;
-	buttons.y = (app.screen.height/8);
+	buttons.anchor.set(0);
+	buttons.x = -50;
+	buttons.y = +50;
+	buttons.scale.set(0.5, 0.5);
 	
+	const buttonMan: Container = new Container();
+	const buttonManScale = 0.5;
+
+	buttonMan.addChild(man);
+	buttonMan.addChild(buttons);
+
+	buttonMan.scale.set(buttonManScale);
+	buttonMan.x = (app.screen.width)-man.width*buttonManScale;
+	buttonMan.y = (app.screen.height)-man.height*buttonManScale;
+
 	app.stage.addChild(clampy);
 	app.stage.addChild(image);
-	app.stage.addChild(man);
-	app.stage.addChild(buttons);
+	app.stage.addChild(buttonMan);
 })	
 //Loader.shared.load();
