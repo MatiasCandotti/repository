@@ -1,4 +1,4 @@
-import { Application, Assets, Container, Sprite } from 'pixi.js'
+import { Application, Assets, Container, Sprite} from 'pixi.js'
 
 const app = new Application({
 	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -35,12 +35,16 @@ Assets.add("Clampy", "./clampy.png");
 Assets.add("myImage", "./image.png");
 Assets.add("manImage", "./man.png");
 Assets.add("buttonYN", "./buttonYesNo.png");
+Assets.add("anchorGlobal", "./manAnchorGlobal.png");
+Assets.add("anchorLocal", "./manAnchorLocal.png");
 
-Assets.load(["Clampy","myImage","buttonYN","manImage"]).then( ()=>{
+Assets.load(["Clampy","myImage","buttonYN","manImage","anchorGlobal","anchorLocal"]).then( ()=>{
 	const clampy: Sprite = Sprite.from("Clampy");
 	const image: Sprite = Sprite.from("myImage");
 	const buttons: Sprite = Sprite.from("buttonYN");
 	const man: Sprite = Sprite.from("manImage");
+	const anchorGlobal: Sprite = Sprite.from("anchorGlobal");
+	const anchorLocal: Sprite = Sprite.from("anchorLocal");
 	
 	console.log("Image size:", image.width, image.height);
 
@@ -48,33 +52,48 @@ Assets.load(["Clampy","myImage","buttonYN","manImage"]).then( ()=>{
 	clampy.x = app.screen.width/2;
 	clampy.y = app.screen.height/2;
 
+	app.stage.addChild(clampy);
+
 	image.anchor.set(0.5);
 	image.x = (app.screen.width/2);
 	image.y = (app.screen.height/2);
 	image.rotation = -Math.PI/4;
-	//image.angle = -45;
 
-	man.anchor.set(0);
-	man.x = 0*(app.screen.width);
-	man.y = 0*(app.screen.height);
+	app.stage.addChild(image);
+	
+	const buttonMan: Container = new Container();
+	const buttonManScale = 0.8;
+	const anchorRotation = -(3/4)* Math.PI;
+
+	buttonMan.addChild(man);
 
 	buttons.anchor.set(0);
 	buttons.x = -50;
 	buttons.y = +50;
 	buttons.scale.set(0.5, 0.5);
-	
-	const buttonMan: Container = new Container();
-	const buttonManScale = 0.5;
 
-	buttonMan.addChild(man);
 	buttonMan.addChild(buttons);
+
+	anchorLocal.scale.set(0.5);
+	anchorLocal.x = +100;
+	anchorLocal.y = +50;
+	anchorLocal.rotation = anchorRotation;
+
+	buttonMan.addChild(anchorLocal);
 
 	buttonMan.scale.set(buttonManScale);
 	buttonMan.x = (app.screen.width)-man.width*buttonManScale;
 	buttonMan.y = (app.screen.height)-man.height*buttonManScale;
 
-	app.stage.addChild(clampy);
-	app.stage.addChild(image);
 	app.stage.addChild(buttonMan);
+
+	const auxPos = anchorLocal.parent.toGlobal(anchorLocal.position);
+	console.log("°* position:", auxPos.x, auxPos.y);
+	anchorGlobal.x = auxPos.x;
+	anchorGlobal.y = auxPos.y;
+	anchorGlobal.rotation = anchorRotation;
+	anchorGlobal.scale.set(0.5*(buttonManScale));
+
+	app.stage.addChild(anchorGlobal);
 })	
 //Loader.shared.load();
