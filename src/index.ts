@@ -9,6 +9,8 @@ const app = new Application({
 	height: 600
 });
 
+const view = app.view as HTMLCanvasElement;
+
 window.addEventListener("resize", ()=>{
 	const scaleX = (window.innerWidth/app.screen.width);
 	const scaleY = (window.innerHeight/app.screen.height);
@@ -17,17 +19,19 @@ window.addEventListener("resize", ()=>{
 	const displayWidth = Math.round(app.screen.width * scale);
 	const displayHeight = Math.round(app.screen.height * scale);
 
-//	const marginH = Math.round((window.innerWidth - displayWidth)/2);
-//	const marginV = Math.round((window.innerHeight - displayHeight)/2);
+	const marginH = Math.round((window.innerWidth - displayWidth)/2);
+	const marginV = Math.round((window.innerHeight - displayHeight)/2);
 
-	app.view.style!.width = displayWidth + "px";
-	app.view.style!.height = displayHeight + "px";
+	/*app.*/view.style!.width = displayWidth + "px";
+	/*app.*/view.style!.height = displayHeight + "px";
 
-//	app.view.style!.marginLeft = marginH + "px";
-//	app.view.style!.marginRight = marginH + "px";
+	
 
-//	app.view.style!.marginTop = marginV + "px";
-//	app.view.style!.marginBottom = marginV + "px";
+	/*app.*/view.style!.marginLeft = marginH + "px";
+	///*app.*/view.style!.marginRight = marginH + "px";
+
+	/*app.*/view.style!.marginTop = marginV + "px";
+	///*app.*/view.style!.marginBottom = marginV + "px";
 });
 window.dispatchEvent(new Event("resize"));
 
@@ -46,6 +50,9 @@ Assets.load(["Clampy","myImage","buttonYN","manImage","anchorGlobal","anchorLoca
 	const anchorGlobal: Sprite = Sprite.from("anchorGlobal");
 	const anchorLocal: Sprite = Sprite.from("anchorLocal");
 	
+	const buttonManScale = 0.8;
+	const anchorRotation = -(3/4)* Math.PI;
+	
 	console.log("Image size:", image.width, image.height);
 
 	clampy.anchor.set(0.5);
@@ -62,9 +69,8 @@ Assets.load(["Clampy","myImage","buttonYN","manImage","anchorGlobal","anchorLoca
 	app.stage.addChild(image);
 	
 	const buttonMan: Container = new Container();
-	const buttonManScale = 0.8;
-	const anchorRotation = -(3/4)* Math.PI;
 
+	buttonMan.pivot.set(0); //en pixeles
 	buttonMan.addChild(man);
 
 	buttons.anchor.set(0);
