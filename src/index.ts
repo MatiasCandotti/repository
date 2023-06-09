@@ -73,10 +73,19 @@ Assets.load(["Clampy","myImage","buttonYN","manImage","anchorGlobal","anchorLoca
 	buttonMan.pivot.set(0); //en pixeles
 	buttonMan.addChild(man);
 
-	buttons.anchor.set(0);
-	buttons.x = -50;
-	buttons.y = +50;
-	buttons.scale.set(0.5, 0.5);
+	const buttonsScaleX = 0.5;
+	const buttonsScaleY = 0.5;
+//	const buttonsYBobbingBottom = 70;
+//	const buttonsYBobbingTop = 50;
+	const buttonsYBobbingCenter = 50;
+	const buttonsYBobbing = 20;
+	const buttonsYBobbingBottom = buttonsYBobbingCenter-buttonsYBobbing;
+	const buttonsYBobbingTop = buttonsYBobbingCenter+buttonsYBobbing;
+	buttons.anchor.x = 0.5;
+	buttons.anchor.y = 0.5;
+	buttons.x = 50;
+	buttons.y = buttonsYBobbingCenter;
+	buttons.scale.set(buttonsScaleX, buttonsScaleY);
 
 	buttonMan.addChild(buttons);
 
@@ -92,6 +101,18 @@ Assets.load(["Clampy","myImage","buttonYN","manImage","anchorGlobal","anchorLoca
 	buttonMan.y = (app.screen.height)-man.height*buttonManScale;
 
 	app.stage.addChild(buttonMan);
+
+	var auxRadians = 1 as number;
+//	var trueBobbingTop = buttonsYBobbingBottom-buttonsYBobbingTop;
+	app.ticker.add(()=>{
+		if(auxRadians == 2*Math.PI){auxRadians = 0;}
+		buttons.scale.x = buttonsScaleX*Math.cos(auxRadians);
+//		buttons.scale.y = buttonsScaleY*Math.cos(aux);
+//		buttons.position.y = ((trueBobbingTop)*Math.cos(auxRadians))+buttonsYBobbingTop;
+		buttons.position.y = buttonsYBobbingCenter+(buttonsYBobbing*Math.cos(auxRadians));
+		auxRadians += 0.01;
+		console.log(Math.cos(auxRadians));
+	})
 
 	const auxPos = anchorLocal.parent.toGlobal(anchorLocal.position);
 	console.log("°* position:", auxPos.x, auxPos.y);
