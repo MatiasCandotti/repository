@@ -1,4 +1,5 @@
-import { Application, Assets, Container, Sprite} from 'pixi.js'
+import { Application, Assets, Container, Sprite} from 'pixi.js';
+import { assets } from './assets';
 
 const app = new Application({
 	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -25,24 +26,14 @@ window.addEventListener("resize", ()=>{
 	/*app.*/view.style!.width = displayWidth + "px";
 	/*app.*/view.style!.height = displayHeight + "px";
 
-	
-
 	/*app.*/view.style!.marginLeft = marginH + "px";
-	///*app.*/view.style!.marginRight = marginH + "px";
-
 	/*app.*/view.style!.marginTop = marginV + "px";
-	///*app.*/view.style!.marginBottom = marginV + "px";
 });
 window.dispatchEvent(new Event("resize"));
 
-Assets.add("Clampy", "./clampy.png");
-Assets.add("myImage", "./image.png");
-Assets.add("manImage", "./man.png");
-Assets.add("buttonYN", "./buttonYesNo.png");
-Assets.add("anchorGlobal", "./manAnchorGlobal.png");
-Assets.add("anchorLocal", "./manAnchorLocal.png");
+Assets.addBundle("MyAssets",assets);
 
-Assets.load(["Clampy","myImage","buttonYN","manImage","anchorGlobal","anchorLocal"]).then( ()=>{
+Assets.loadBundle(["MyAssets"]).then( ()=>{
 	const clampy: Sprite = Sprite.from("Clampy");
 	const image: Sprite = Sprite.from("myImage");
 	const buttons: Sprite = Sprite.from("buttonYN");
@@ -75,12 +66,10 @@ Assets.load(["Clampy","myImage","buttonYN","manImage","anchorGlobal","anchorLoca
 
 	const buttonsScaleX = 0.5;
 	const buttonsScaleY = 0.5;
-//	const buttonsYBobbingBottom = 70;
-//	const buttonsYBobbingTop = 50;
+
 	const buttonsYBobbingCenter = 50;
 	const buttonsYBobbing = 20;
-	const buttonsYBobbingBottom = buttonsYBobbingCenter-buttonsYBobbing;
-	const buttonsYBobbingTop = buttonsYBobbingCenter+buttonsYBobbing;
+
 	buttons.anchor.x = 0.5;
 	buttons.anchor.y = 0.5;
 	buttons.x = 50;
@@ -103,12 +92,10 @@ Assets.load(["Clampy","myImage","buttonYN","manImage","anchorGlobal","anchorLoca
 	app.stage.addChild(buttonMan);
 
 	var auxRadians = 1 as number;
-//	var trueBobbingTop = buttonsYBobbingBottom-buttonsYBobbingTop;
+
 	app.ticker.add(()=>{
 		if(auxRadians == 2*Math.PI){auxRadians = 0;}
 		buttons.scale.x = buttonsScaleX*Math.cos(auxRadians);
-//		buttons.scale.y = buttonsScaleY*Math.cos(aux);
-//		buttons.position.y = ((trueBobbingTop)*Math.cos(auxRadians))+buttonsYBobbingTop;
 		buttons.position.y = buttonsYBobbingCenter+(buttonsYBobbing*Math.cos(auxRadians));
 		auxRadians += 0.01;
 		console.log(Math.cos(auxRadians));
@@ -122,5 +109,4 @@ Assets.load(["Clampy","myImage","buttonYN","manImage","anchorGlobal","anchorLoca
 	anchorGlobal.scale.set(0.5*(buttonManScale));
 
 	app.stage.addChild(anchorGlobal);
-})	
-//Loader.shared.load();
+})
